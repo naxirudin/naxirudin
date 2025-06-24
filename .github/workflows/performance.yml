@@ -1,0 +1,21 @@
+name: Reassure Performance Check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  reassure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Run performance tests
+        run: ./reassure-tests.sh
+      - name: Run Danger.js
+        run: npx danger ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
